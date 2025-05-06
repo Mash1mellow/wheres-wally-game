@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Where's Wally Collage</title>
+  <style>
+    img { max-width: 100%; height: auto; }
+    .container { text-align: center; }
+    .result { font-size: 24px; margin-top: 20px; color: green; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Where's Wally Game</h1>
+
+    {% if image %}
+      <form method="POST" action="/click">
+        <input type="hidden" name="x" id="clickX">
+        <input type="hidden" name="y" id="clickY">
+        <img src="{{ url_for('serve_file', filename=image) }}" onclick="getClick(event)">
+        <br>
+        <button type="submit">Submit Guess</button>
+      </form>
+    {% else %}
+      <form method="POST" enctype="multipart/form-data">
+        <p>Upload your target image:</p>
+        <input type="file" name="image" required>
+        <button type="submit">Generate Collage</button>
+      </form>
+    {% endif %}
+
+    {% if show_result %}
+      <div class="result">{{ result }}</div>
+    {% endif %}
+  </div>
+
+  <script>
+    function getClick(e) {
+      const rect = e.target.getBoundingClientRect();
+      const scaleX = e.target.naturalWidth / e.target.width;
+      const scaleY = e.target.naturalHeight / e.target.height;
+
+      const x = Math.round((e.clientX - rect.left) * scaleX);
+      const y = Math.round((e.clientY - rect.top) * scaleY);
+
+      document.getElementById('clickX').value = x;
+      document.getElementById('clickY').value = y;
+    }
+  </script>
+</body>
+</html>
