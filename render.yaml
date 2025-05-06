@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: wheres-wally-game
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PIXABAY_API_KEY
+        value: 49999731-63b76a3112e3bfd574ea17509
